@@ -1,5 +1,74 @@
 class Algorithms():
     
+    def calVolumen(self, arr):
+        n = len(arr)
+        for i in range(n):
+            vol = arr[i][5]*arr[i][6]*arr[i][7]
+            arr[i] = (arr[i][0],arr[i][1],arr[i][2],arr[i][3],arr[i][4],arr[i][5],arr[i][6],arr[i][7],vol,arr[i][9],arr[i][10])
+    
+    def mergeSort(self, arr): 
+        if len(arr) >1: 
+            mid = len(arr)//2 
+            L = arr[:mid] 
+            R = arr[mid:] 
+        
+            self.mergeSort(L) 
+            self.mergeSort(R) 
+  
+            i = j = k = 0
+          
+            while i < len(L) and j < len(R): 
+                if L[i][2] < R[j][2]: 
+                    arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3]) 
+                    i+=1
+                else: 
+                    arr[k] = (R[j][0],R[j][1],R[j][2],R[j][3]) 
+                    j+=1
+                    k+=1
+
+            while i < len(L): 
+                arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3])
+                i+=1
+                k+=1
+          
+            while j < len(R): 
+                arr[k] = (R[j][0],R[j][1],R[j][2],R[j][3]) 
+                j+=1
+                k+=1
+    
+    def mergeSortV(self, arr): 
+        if len(arr) >1: 
+            mid = len(arr)//2 
+            L = arr[:mid] 
+            R = arr[mid:] 
+        
+            self.mergeSortV(L) 
+            self.mergeSortV(R) 
+  
+            i = j = k = 0
+          
+            while i < len(L) and j < len(R): 
+                if L[i][8] < R[j][8]: 
+                    arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3],L[i][4],L[i][5],L[i][6],L[i][7],L[i][8],L[i][9],L[i][10]) 
+                    i+=1
+                else: 
+                    arr[k] = (R[i][0],R[i][1],R[i][2],R[i][3],R[i][4],R[i][5],R[i][6],R[i][7],R[i][8],R[i][9],R[i][10])  
+                    j+=1
+                k+=1
+
+            while i < len(L): 
+                arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3],L[i][4],L[i][5],L[i][6],L[i][7],L[i][8],L[i][9],L[i][10]) 
+                i+=1
+                k+=1
+          
+            while j < len(R): 
+                arr[k] = (R[i][0],R[i][1],R[i][2],R[i][3],R[i][4],R[i][5],R[i][6],R[i][7],R[i][8],R[i][9],R[i][10])  
+                j+=1
+                k+=1
+    
+    def CalMax(self, arr):
+        return arr.index(max(arr[0],arr[1],arr[2]))
+    
     def partition(self, arr, ini, fin, pos):
         i = ini - 1
         pivote = arr[fin][pos]
@@ -77,3 +146,44 @@ class Algorithms():
                         
         
         return arrItem, bins
+    
+    def Algorithm(self, rectangles, anchoC, altoC, largoC):
+    
+        n = len(rectangles)
+        calVolumen(rectangles)
+
+        x = 0
+        cont = 1
+        base = 0
+    
+        for i in range(n):
+        
+            if rectangles[i][7] > rectangles[i][5] and rectangles[i][6] >= rectangles[i][5]:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][6],rectangles[i][5],rectangles[i][7],rectangles[i][8],cont,2)
+            elif rectangles[i][6] > rectangles[i][7] and rectangles[i][7] <= rectangles[i][5]:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
+            elif rectangles[i][6] > rectangles[i][7] and rectangles[i][7] >= rectangles[i][5]:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][7],rectangles[i][5],rectangles[i][6],rectangles[i][8],cont,2)
+            elif rectangles[i][5] > rectangles[i][7] and rectangles[i][7] >= rectangles[i][6]:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][7],rectangles[i][6],rectangles[i][5],rectangles[i][8],cont,2)
+            else:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][6],rectangles[i][7],rectangles[i][5],rectangles[i][8],cont,2)
+        
+            if i != 0:
+                if rectangles[i-1][4] + rectangles[i-1][6] + rectangles[i][6] <= altoC:
+                    rectangles[i] =  (rectangles[i][0],rectangles[i][1],rectangles[i-1][2],anchoC - rectangles[i][5],rectangles[i-1][4]+rectangles[i-1][6],rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
+                else:
+                    if rectangles[base][2]+rectangles[base][7] + rectangles[i][7] <= largoC:
+                        rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[base][2]+rectangles[base][7],anchoC - rectangles[i][5],rectangles[base][4],rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
+                        base = i
+                    else:
+                        if rectangles[x][3] - rectangles[i][5] <= anchoC:    
+                            rectangles[i] = (rectangles[i][0],rectangles[i][1],0,rectangles[x][3] - rectangles[i][5],0,rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
+                            base = i
+                            x = i
+                        else:
+			                cont +=1
+                			rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
+                        
+            else:
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)

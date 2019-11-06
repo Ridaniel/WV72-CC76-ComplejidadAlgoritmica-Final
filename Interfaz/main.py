@@ -41,7 +41,7 @@ class Files():
                     arrAux.append(l[i])
                 else:
                     arrAux.append(int(l[i]))
-            arr.append((arrAux[0],arrAux[1],0,0,0,arrAux[2],arrAux[3],arrAux[4],arrAux[2]*arrAux[3]*arrAux[4],0,0))
+            arr.append((arrAux[0],arrAux[1],0,0,0,arrAux[2],arrAux[4],arrAux[3],arrAux[2]*arrAux[3]*arrAux[4],0,0))
             count +=1
         rectangles = arr
         cantRectangles = n
@@ -79,6 +79,7 @@ class Files():
         f.close()           
        
 class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
+    
     def __init__(self):
         Tk().withdraw()
         QtWidgets.QMainWindow.__init__(self)
@@ -106,9 +107,8 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         self.pushButton_7.clicked.connect(self.graph3DFile)
         #ArrItems
         self.arrItem = []
-        self.lB = 100
-        self.AB = 100
-        self.HB = 100
+        self.curr_pos = 0
+        
     def addItem(self):
         self.listWidget.addItem(self.lineEdit_6.text()+" - "+self.lineEdit_5.text()+" - "+self.lineEdit_7.text()+" - "+self.lineEdit_8.text()+" - "+self.lineEdit_9.text())
         
@@ -203,58 +203,111 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         self.arrItem, bins = alg.NFDH(self.arrItem, self.larBin, self.anchBin, self.altBin)
         print(self.arrItem)
         
+        nBin = self.arrItem[len(self.arrItem) - 1][9]
+        
         fig = plt.figure()
         ax1 = fig.add_subplot(111, projection='3d')
         
-        xi3 = [0]*len(self.arrItem)
-        yi3 = [0]*len(self.arrItem)
-        zi3 = [0]*len(self.arrItem)
+        plots = [(0, 0, 0, 0, 0, 0)] * (nBin+1)
+         
+        for i in range(nBin+1):
+            x = []
+            y = []
+            z = []
         
-        dix = [0]*len(self.arrItem)
-        diy = [0]*len(self.arrItem)
-        diz = [0]*len(self.arrItem)
+            dx = []
+            dy = []
+            dz = []
         
-        for i in range(len(self.arrItem)):
-            xi3.append(self.arrItem[i][2])
-            yi3.append(self.arrItem[i][3])
-            zi3.append(self.arrItem[i][4])
+            for j in range(len(self.arrItem)):
+                if self.arrItem[j][9] == i:
+                    x.append(self.arrItem[j][2])
+                    y.append(self.arrItem[j][3])
+                    z.append(self.arrItem[j][4])
             
-            dix.append(self.arrItem[i][6])
-            diy.append(self.arrItem[i][5])
-            diz.append(self.arrItem[i][7])
+                    dx.append(self.arrItem[j][6])
+                    dy.append(self.arrItem[j][5])
+                    dz.append(self.arrItem[j][7])
             
+            
+            plots[i] = (x, y, z, dx, dy, dz)
         
-        ax1.bar3d(xi3, yi3, zi3, dix, diy, diz)
+        print("ss ",plots)
+        
+        def key_event(e):
+
+            if e.key == "right":
+                self.curr_pos = self.curr_pos + 1
+            elif e.key == "left":
+                self.curr_pos = self.curr_pos - 1
+            else:
+                return
+            self.curr_pos = self.curr_pos % len(plots)
+
+            ax1.cla()
+            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
+
+            fig.canvas.draw()
+
+        fig.canvas.mpl_connect('key_press_event', key_event)
+        ax1.bar3d(x, y, z, dx, dy, dz)
         plt.show()
     
     def graph3DFile(self):
         alg = Algorithms()
         global rectangles
-        rectangles, bins = alg.NFDH(rectangles, self.lB, self.AB, self.HB)
+        global contain
+        rectangles, bins = alg.NFDH(rectangles, contain[2], contain[0], contain[1])
         print(rectangles)
+        
+        nBin = rectangles[len(rectangles) - 1][9]
         
         fig = plt.figure()
         ax1 = fig.add_subplot(111, projection='3d')
         
-        xi3 = [0]*len(rectangles)
-        yi3 = [0]*len(rectangles)
-        zi3 = [0]*len(rectangles)
+        plots = [(0, 0, 0, 0, 0, 0)] * (nBin+1)
+         
+        for i in range(nBin+1):
+            x = []
+            y = []
+            z = []
         
-        dix = [0]*len(rectangles)
-        diy = [0]*len(rectangles)
-        diz = [0]*len(rectangles)
+            dx = []
+            dy = []
+            dz = []
         
-        for i in range(len(rectangles)):
-            xi3.append(rectangles[i][2])
-            yi3.append(rectangles[i][3])
-            zi3.append(rectangles[i][4])
+            for j in range(len(rectangles)):
+                if rectangles[j][9] == i:
+                    x.append(rectangles[j][2])
+                    y.append(rectangles[j][3])
+                    z.append(rectangles[j][4])
             
-            dix.append(rectangles[i][6])
-            diy.append(rectangles[i][5])
-            diz.append(rectangles[i][7])
+                    dx.append(rectangles[j][6])
+                    dy.append(rectangles[j][5])
+                    dz.append(rectangles[j][7])
             
+            
+            plots[i] = (x, y, z, dx, dy, dz)
         
-        ax1.bar3d(xi3, yi3, zi3, dix, diy, diz)
+        print("ss ",plots)
+        
+        def key_event(e):
+
+            if e.key == "right":
+                self.curr_pos = self.curr_pos + 1
+            elif e.key == "left":
+                self.curr_pos = self.curr_pos - 1
+            else:
+                return
+            self.curr_pos = self.curr_pos % len(plots)
+
+            ax1.cla()
+            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
+
+            fig.canvas.draw()
+
+        fig.canvas.mpl_connect('key_press_event', key_event)
+        ax1.bar3d(x, y, z, dx, dy, dz)
         plt.show()
         
 if __name__ == "__main__":
