@@ -150,7 +150,7 @@ class Algorithms():
     def Algorithm(self, rectangles, anchoC, altoC, largoC):
     
         n = len(rectangles)
-        calVolumen(rectangles)
+        self.calVolumen(rectangles)
 
         x = 0
         cont = 1
@@ -182,8 +182,8 @@ class Algorithms():
                             base = i
                             x = i
                         else:
-			                cont +=1
-                			rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
+                            cont +=1
+                            rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
                         
             else:
                 rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)

@@ -76,7 +76,26 @@ class Files():
               largo = random.randint(20,50)
            idOne+=1
            f.write(str(count)+" "+id+" "+str(ancho)+" "+str(alto)+" "+str(largo)+'\n')
-        f.close()           
+        f.close()  
+    def writeResult(self):
+        global rectangles
+        n = len(rectangles)
+        containersU = rectangles[n-1][9]
+        volumenT = 2000
+        volumenO = 1000
+        voluemenD = volumenT- volumenO
+        
+        f = open("result.txt","w")
+        f.write("Contenedores usados:  "+str(containersU)+"\n")
+        f.write("Volumen disponible:  "+str(voluemenD)+"m3"+"\n")
+        f.write("Volumen Ocupado:  " + str(volumenO)+"m3 - ("+ str((volumenO/volumenT)*100)+"%)"+"\n")
+        f.write("Cajas a transportar:  "+str(n)+"\n")
+        f.write("Contenedor   Formato  Coordenadas   Orientacion "+"\n")
+        
+        for i in rectangles:
+            f.write("\t"+str(i[9])+"\t\t\t"+i[1]+"\t\t("+str(i[2])+","+str(i[3])+","+str(i[4])+") \t\t"+ str(i[10])+"\n")
+        
+        f.close()         
        
 class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
     
@@ -257,7 +276,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         alg = Algorithms()
         global rectangles
         global contain
-        rectangles, bins = alg.NFDH(rectangles, contain[2], contain[0], contain[1])
+        rectangles, bins = alg.Algorithm(rectangles, contain[2], contain[0], contain[1])
         print(rectangles)
         
         nBin = rectangles[len(rectangles) - 1][9]
