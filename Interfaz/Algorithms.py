@@ -151,6 +151,7 @@ class Algorithms():
     
         n = len(rectangles)
         self.calVolumen(rectangles)
+        self.mergeSortV(rectangles)
 
         x = 0
         cont = 1
@@ -183,7 +184,7 @@ class Algorithms():
                             x = i
                         else:
                             cont +=1
-                            rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
+                            rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangles[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
                         
             else:
-                rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangle[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangles[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)

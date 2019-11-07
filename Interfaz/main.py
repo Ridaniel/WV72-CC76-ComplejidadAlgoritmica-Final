@@ -139,19 +139,17 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         self.anchBin = int(self.lineEdit.text())
         self.larBin = int(self.lineEdit_3.text())
         
-        if (self.n <= self.cantT):
+        for i in range(self.cantI):
             
             self.form = self.lineEdit_5.text()
             self.anch = int(self.lineEdit_7.text())
             self.alt = int(self.lineEdit_8.text())
             self.larg = int(self.lineEdit_9.text())
                 
-            self.tupItem = (self.cantI, self.form, 0, 0, 0, self.anch, self.larg, self.alt, 0, 0, 0)
+            self.tupItem = (1, self.form, 0, 0, 0, self.anch, self.larg, self.alt, 0, 0, 0)
             self.arrItem.append(self.tupItem)
             print(self.arrItem)
         
-        else:
-            print("Cantidad de Items superada")
         
         
         
@@ -276,7 +274,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         alg = Algorithms()
         global rectangles
         global contain
-        rectangles, bins = alg.Algorithm(rectangles, contain[2], contain[0], contain[1])
+        alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
         print(rectangles)
         
         nBin = rectangles[len(rectangles) - 1][9]
