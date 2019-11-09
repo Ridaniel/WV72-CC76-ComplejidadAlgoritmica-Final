@@ -77,8 +77,8 @@ class Files():
            idOne+=1
            f.write(str(count)+" "+id+" "+str(ancho)+" "+str(alto)+" "+str(largo)+'\n')
         f.close()  
-    def writeResult(self):
-        global rectangles
+    def writeResult(self, rectangles):
+        
         n = len(rectangles)
         containersU = rectangles[n-1][9]
         volumenT = 2000
@@ -90,7 +90,7 @@ class Files():
         f.write("Volumen disponible:  "+str(voluemenD)+"m3"+"\n")
         f.write("Volumen Ocupado:  " + str(volumenO)+"m3 - ("+ str((volumenO/volumenT)*100)+"%)"+"\n")
         f.write("Cajas a transportar:  "+str(n)+"\n")
-        f.write("Contenedor   Formato  Coordenadas   Orientacion "+"\n")
+        f.write("\tContenedor\t\tFormato\t\tCoordenadas\t\tOrientacion "+"\n")
         
         for i in rectangles:
             f.write("\t"+str(i[9])+"\t\t\t"+i[1]+"\t\t("+str(i[2])+","+str(i[3])+","+str(i[4])+") \t\t"+ str(i[10])+"\n")
@@ -194,12 +194,10 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         global filename
         filename = askopenfilename()
         self.lineEdit_10.setText(filename)
-        
     def searchReadRuta(self):
         global filename2
         filename2 = askopenfilename()
         self.lineEdit_11.setText(filename2)
-        
     def writeRuta(self):
         global filename
         file = Files()
@@ -265,7 +263,9 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
 
             fig.canvas.draw()
-
+        file = Files()
+        file.writeResult(self.arrItem)
+        
         fig.canvas.mpl_connect('key_press_event', key_event)
         ax1.bar3d(x, y, z, dx, dy, dz)
         plt.show()
@@ -274,6 +274,11 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         alg = Algorithms()
         global rectangles
         global contain
+        aux = alg.calVolumen(rectangles)
+        print("Prueba",aux)
+        aux = alg.mergeSortV(aux)
+        print("Prueba2",aux)
+        rectangles = aux
         alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
         print(rectangles)
         
@@ -322,7 +327,10 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
 
             fig.canvas.draw()
-
+        
+        file = Files()
+        file.writeResult(rectangles)
+        
         fig.canvas.mpl_connect('key_press_event', key_event)
         ax1.bar3d(x, y, z, dx, dy, dz)
         plt.show()

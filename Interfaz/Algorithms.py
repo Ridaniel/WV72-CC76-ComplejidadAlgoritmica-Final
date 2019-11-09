@@ -5,7 +5,7 @@ class Algorithms():
         for i in range(n):
             vol = arr[i][5]*arr[i][6]*arr[i][7]
             arr[i] = (arr[i][0],arr[i][1],arr[i][2],arr[i][3],arr[i][4],arr[i][5],arr[i][6],arr[i][7],vol,arr[i][9],arr[i][10])
-    
+        return arr
     def mergeSort(self, arr): 
         if len(arr) >1: 
             mid = len(arr)//2 
@@ -52,7 +52,7 @@ class Algorithms():
                     arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3],L[i][4],L[i][5],L[i][6],L[i][7],L[i][8],L[i][9],L[i][10]) 
                     i+=1
                 else: 
-                    arr[k] = (R[i][0],R[i][1],R[i][2],R[i][3],R[i][4],R[i][5],R[i][6],R[i][7],R[i][8],R[i][9],R[i][10])  
+                    arr[k] = (R[j][0],R[j][1],R[j][2],R[j][3],R[j][4],R[j][5],R[j][6],R[j][7],R[j][8],R[j][9],R[j][10])  
                     j+=1
                 k+=1
 
@@ -62,9 +62,10 @@ class Algorithms():
                 k+=1
           
             while j < len(R): 
-                arr[k] = (R[i][0],R[i][1],R[i][2],R[i][3],R[i][4],R[i][5],R[i][6],R[i][7],R[i][8],R[i][9],R[i][10])  
+                arr[k] = (R[j][0],R[j][1],R[j][2],R[j][3],R[j][4],R[j][5],R[j][6],R[j][7],R[j][8],R[j][9],R[j][10])  
                 j+=1
                 k+=1
+        return arr
     
     def CalMax(self, arr):
         return arr.index(max(arr[0],arr[1],arr[2]))
