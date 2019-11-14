@@ -1,16 +1,6 @@
 Contenedores usados:  0
 Volumen disponible:  1000m3
 Volumen Ocupado:  1000m3 - (50.0%)
-Cajas a transportar:  11
+Cajas a transportar:  1
 	Contenedor		Formato		Coordenadas		Orientacion 
-	0			a		(0,90,0) 		0
-	0			a		(0,80,0) 		0
-	0			a		(0,70,0) 		0
-	0			a		(0,60,0) 		0
-	0			a		(0,50,0) 		0
-	0			a		(0,40,0) 		0
-	0			a		(0,30,0) 		0
-	0			a		(0,20,0) 		0
 	0			a		(0,10,0) 		0
-	0			a		(0,0,0) 		0
-	0			a		(0,90,10) 		0
