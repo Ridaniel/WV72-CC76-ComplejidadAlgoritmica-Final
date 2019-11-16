@@ -454,7 +454,7 @@ QPushButton:hover
      </item>
      <item>
       <property name="text">
-       <string>Algoritmo 3</string>
+       <string>Algorithm</string>
       </property>
      </item>
     </widget>
@@ -703,7 +703,7 @@ QPushButton:hover
      </item>
      <item>
       <property name="text">
-       <string>Algoritmo 3</string>
+       <string>Algorithm</string>
       </property>
      </item>
     </widget>

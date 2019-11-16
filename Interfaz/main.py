@@ -58,7 +58,7 @@ class Files():
            ancho = random.randint(200, 300)
            alto = random.randint(200, 300)
         
-        n = random.randint(1,10)
+        n = random.randint(30,50)
         
         f.write(str(ancho)+" "+str(alto)+" "+str(largo)+'\n')
         f.write(str(n)+"\n")
@@ -124,6 +124,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         #Graphic
         self.pushButton_13.clicked.connect(self.graph3D)
         self.pushButton_7.clicked.connect(self.graph3DFile)
+        
         #ArrItems
         self.arrItem = []
         self.curr_pos = 0
@@ -146,12 +147,13 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             self.alt = int(self.lineEdit_8.text())
             self.larg = int(self.lineEdit_9.text())
                 
-            self.tupItem = (1, self.form, 0, 0, 0, self.anch, self.larg, self.alt, 0, 0, 0)
+            self.tupItem = (1, self.form, 0, 0, 0, self.anch, self.alt, self.larg, 0, 0, 0)
             self.arrItem.append(self.tupItem)
             print(self.arrItem)
         
         
-        
+        print(self.comboBox.currentText())
+    
         
         self.lineEdit_5.clear()
         self.lineEdit_6.clear()
@@ -213,9 +215,16 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         print(rectangles)
     
     def graph3D(self):
+        global rectangles
         
         alg = Algorithms()
-        self.arrItem, bins = alg.NFDH(self.arrItem, self.larBin, self.anchBin, self.altBin)
+        if self.comboBox.currentText() == "NFDH":
+            self.arrItem, bins = alg.NFDH(self.arrItem, self.larBin, self.anchBin, self.altBin)
+        elif self.comboBox.currentText() == "Algorithm":
+            alg.Algorithm(self.arrItem, self.anchBin, self.altBin, self.larBin)
+        else:
+            print("En proceso")
+            
         print(self.arrItem)
         
         nBin = self.arrItem[len(self.arrItem) - 1][9]
@@ -240,9 +249,9 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
                     y.append(self.arrItem[j][3])
                     z.append(self.arrItem[j][4])
             
-                    dx.append(self.arrItem[j][6])
+                    dx.append(self.arrItem[j][7])
                     dy.append(self.arrItem[j][5])
-                    dz.append(self.arrItem[j][7])
+                    dz.append(self.arrItem[j][6])
             
             
             plots[i] = (x, y, z, dx, dy, dz)
@@ -274,13 +283,14 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         alg = Algorithms()
         global rectangles
         global contain
-        aux = alg.calVolumen(rectangles)
-        print("Prueba",aux)
-        aux = alg.mergeSortV(aux)
-        print("Prueba2",aux)
-        rectangles = aux
-        alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
-        print(rectangles)
+        
+        if self.comboBox_2.currentText() == "NFDH":
+            rectangles, bins = alg.NFDH(rectangles, contain[1], contain[0], contain[2])
+            print("NFDH")
+        elif self.comboBox_2.currentText() == "Algorithm":
+            alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
+        else:
+            print("En proceso")
         
         nBin = rectangles[len(rectangles) - 1][9]
         
@@ -304,9 +314,9 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
                     y.append(rectangles[j][3])
                     z.append(rectangles[j][4])
             
-                    dx.append(rectangles[j][6])
+                    dx.append(rectangles[j][7])
                     dy.append(rectangles[j][5])
-                    dz.append(rectangles[j][7])
+                    dz.append(rectangles[j][6])
             
             
             plots[i] = (x, y, z, dx, dy, dz)

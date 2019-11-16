@@ -48,7 +48,7 @@ class Algorithms():
             i = j = k = 0
           
             while i < len(L) and j < len(R): 
-                if L[i][8] < R[j][8]: 
+                if L[i][8] > R[j][8]: 
                     arr[k] = (L[i][0],L[i][1],L[i][2],L[i][3],L[i][4],L[i][5],L[i][6],L[i][7],L[i][8],L[i][9],L[i][10]) 
                     i+=1
                 else: 
@@ -65,7 +65,6 @@ class Algorithms():
                 arr[k] = (R[j][0],R[j][1],R[j][2],R[j][3],R[j][4],R[j][5],R[j][6],R[j][7],R[j][8],R[j][9],R[j][10])  
                 j+=1
                 k+=1
-        return arr
     
     def CalMax(self, arr):
         return arr.index(max(arr[0],arr[1],arr[2]))
@@ -91,16 +90,16 @@ class Algorithms():
     
     def NFDH(self, arrItem, largoBin, anchBin, altoBin):
         n = len(arrItem)
-        self.quicksort(arrItem, 0, n-1, 7)
+        self.quicksort(arrItem, 0, n-1, 6)
         bins = 0
         y = anchBin
         z = 0
         x = 0
-        larC = arrItem[0][6] ##mayor largo
+        larC = arrItem[0][7] ##mayor largo
     
         ########
         arrItem[0] = (arrItem[0][0], arrItem[0][1], x, y - arrItem[0][5], z, arrItem[0][5], arrItem[0][6], arrItem[0][7], 0, bins, 0)
-        newEst = arrItem[0][7] ##Z
+        newEst = arrItem[0][6] ##Z
     
         for i in range(1, n):
         
@@ -109,35 +108,35 @@ class Algorithms():
             if varY >= 0: ## Si el ancho del item es mayor o igual al 0, agregar 
                 arrItem[i] = (arrItem[i][0], arrItem[i][1], x, arrItem[i-1][3] - arrItem[i][5], z, arrItem[i][5], arrItem[i][6], arrItem[i][7], 0, bins, 0)
             
-                if x + arrItem[i][6] > larC:
-                    larC = arrItem[i][6]
+                if x + arrItem[i][7] > larC:
+                    larC = arrItem[i][7]
     
         
             else:
                 z = newEst ## Actualiza posicion z para un nuevo estante
-                varZ = z + arrItem[i][7]
-                varX = larC + arrItem[i][6]
+                varZ = z + arrItem[i][6]
+                varX = larC + arrItem[i][7]
             
                 if varZ <= altoBin: ## Si el alto del item es menor o igual a altoBin, agregar
-                    newEst = newEst + arrItem[i][7]
+                    newEst = newEst + arrItem[i][6]
                     arrItem[i] = (arrItem[i][0], arrItem[i][1], x, anchBin - arrItem[i][5], z, arrItem[i][5], arrItem[i][6], arrItem[i][7], 0, bins, 0)
                 
-                    if x + arrItem[i][6] > larC:
-                        larC = arrItem[i][6]
+                    if x + arrItem[i][7] > larC:
+                        larC = arrItem[i][7]
             
                 elif varZ > altoBin and varX <= largoBin:
-                    newEst = arrItem[i][7]
+                    newEst = arrItem[i][6]
                     y = anchBin
                     z = 0
                     x = larC
-                    larC = x + arrItem[i][6]
+                    larC = x + arrItem[i][7]
                     
                     arrItem[i] = (arrItem[i][0], arrItem[i][1], x, y - arrItem[i][5], z, arrItem[i][5], arrItem[i][6], arrItem[i][7], 0, bins, 0)
                 
-                    print(arrItem[i][7])
+                    print(arrItem[i][6])
             
                 else:
-                    newEst = arrItem[i][7]
+                    newEst = arrItem[i][6]
                     y = anchBin
                     x = 0
                     z = 0
