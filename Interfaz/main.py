@@ -6,6 +6,7 @@ from PyQt5 import uic,QtWidgets
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import random
+import timeit
 
 qtCreatorFile = "MyForm.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -218,10 +219,23 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         global rectangles
         
         alg = Algorithms()
+
         if self.comboBox.currentText() == "NFDH":
+            
+            start = timeit.default_timer()
             self.arrItem, bins = alg.NFDH(self.arrItem, self.larBin, self.anchBin, self.altBin)
+            stop = timeit.default_timer()
+            execution_time = stop - start
+
+            print("Program Executed in "+str(execution_time)) #It returns time in sec
+            
         elif self.comboBox.currentText() == "Algorithm":
+            start = timeit.default_timer()
             alg.Algorithm(self.arrItem, self.anchBin, self.altBin, self.larBin)
+            stop = timeit.default_timer()
+            execution_time = stop - start
+
+            print("Program Executed in "+str(execution_time)) #It returns time in sec
         else:
             print("En proceso")
             

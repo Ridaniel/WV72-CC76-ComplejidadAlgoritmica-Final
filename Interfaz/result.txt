@@ -1,6 +1,7 @@
 Contenedores usados:  1
 Volumen disponible:  1000m3
 Volumen Ocupado:  1000m3 - (50.0%)
+<<<<<<< HEAD
 Cajas a transportar:  45
 	Contenedor		Formato		Coordenadas		Orientacion 
 	1			G		(0,193,0) 		2
@@ -48,3 +49,8 @@ Cajas a transportar:  45
 	1			`		(259,205,49) 		2
 	1			R		(259,211,74) 		2
 	1			A		(259,218,102) 		2
+=======
+Cajas a transportar:  1
+	Contenedor		Formato		Coordenadas		Orientacion 
+	0			a		(0,10,0) 		0
+>>>>>>> e6f697efc7844b6e49caf47feee3c773035e4c02

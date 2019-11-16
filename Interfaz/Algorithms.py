@@ -1,3 +1,4 @@
+from memory_profiler import profile
 class Algorithms():
     
     def calVolumen(self, arr):
@@ -87,7 +88,7 @@ class Algorithms():
         
             self.quicksort(arr, ini, pi-1, pos)
             self.quicksort(arr, pi+1, fin, pos)
-    
+    @profile
     def NFDH(self, arrItem, largoBin, anchBin, altoBin):
         n = len(arrItem)
         self.quicksort(arrItem, 0, n-1, 6)
@@ -146,7 +147,7 @@ class Algorithms():
                         
         
         return arrItem, bins
-    
+    @profile
     def Algorithm(self, rectangles, anchoC, altoC, largoC):
     
         n = len(rectangles)
