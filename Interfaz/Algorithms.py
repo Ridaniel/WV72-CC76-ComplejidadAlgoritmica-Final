@@ -1,4 +1,5 @@
 from memory_profiler import profile
+
 class Algorithms():
     
     def calVolumen(self, arr):
@@ -155,7 +156,7 @@ class Algorithms():
         self.mergeSortV(rectangles)
 
         x = 0
-        cont = 1
+        cont = 0
         base = 0
     
         for i in range(n):
@@ -184,7 +185,8 @@ class Algorithms():
                             base = i
                             x = i
                         else:
-                            cont +=1
+                            print("cambia :c")
+                            cont += 1
                             rectangles[i] = (rectangles[i][0],rectangles[i][1],0,anchoC - rectangles[i][5],0,rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],cont,2)
                         
             else:
