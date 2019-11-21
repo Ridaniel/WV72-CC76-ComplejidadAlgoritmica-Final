@@ -180,7 +180,7 @@ class Algorithms():
                         rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[base][2]+rectangles[base][7],anchoC - rectangles[i][5],rectangles[base][4],rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
                         base = i
                     else:
-                        if rectangles[x][3] - rectangles[i][5] <= anchoC:    
+                        if rectangles[x][3] - rectangles[i][5] > 0:    
                             rectangles[i] = (rectangles[i][0],rectangles[i][1],0,rectangles[x][3] - rectangles[i][5],0,rectangles[i][5],rectangles[i][7],rectangles[i][6],rectangles[i][8],cont,2)
                             base = i
                             x = i

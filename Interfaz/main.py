@@ -284,7 +284,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
 
             ax1.cla()
             ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
-
+            print(self.curr_pos)
             fig.canvas.draw()
         file = Files()
         file.writeResult(self.arrItem)
