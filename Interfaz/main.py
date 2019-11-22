@@ -7,7 +7,7 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import random
 import timeit
-
+import numpy as np
 qtCreatorFile = "MyForm.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
@@ -129,6 +129,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         #ArrItems
         self.arrItem = []
         self.curr_pos = 0
+        self.binMostrado=0
         
     def addItem(self):
         self.listWidget.addItem(self.lineEdit_6.text()+" - "+self.lineEdit_5.text()+" - "+self.lineEdit_7.text()+" - "+self.lineEdit_8.text()+" - "+self.lineEdit_9.text())
@@ -277,40 +278,52 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
         print("ss ",plots)
         
         def key_event(e):
-
+          
             if e.key == "right":
                 self.curr_pos = self.curr_pos + 1
+                self.binMostrado+=1
+                if self.binMostrado>nBin:
+                    self.binMostrado=0
+               
             elif e.key == "left":
                 self.curr_pos = self.curr_pos - 1
+                self.binMostrado-=1
+                if self.binMostrado<0:
+                    self.binMostrado=nBin
+           
             else:
+               
                 return
             self.curr_pos = self.curr_pos % len(plots)
 
             ax1.cla()
-            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5],shade=True)
+            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5],edgecolor='red')
             print(self.curr_pos)
             fig.canvas.draw()
         file = Files()
         file.writeResult(self.arrItem)
-        
         fig.canvas.mpl_connect('key_press_event', key_event)
-        ax1.bar3d(x, y, z, dx, dy, dz)
+        #ax1.text.mpl_connect('key_press_event', key_event)
+        ax1.bar3d(x, y, z, dx, dy, dz,edgecolor='red')
+       
         plt.show()
     
     def graph3DFile(self):
         alg = Algorithms()
         global rectangles
         global contain
-        
+        nBin=0
         if self.comboBox_2.currentText() == "NFDH":
             rectangles, bins = alg.NFDH(rectangles, contain[1], contain[0], contain[2])
+            nBin= rectangles[len(rectangles) - 1][9]
             print("NFDH")
         elif self.comboBox_2.currentText() == "Algorithm":
             alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
+            nBin= rectangles[len(rectangles) - 1][9]
         else:
-            print("En proceso")
+           nBin=alg.BFDH(self.arrItem, self.anchBin, self.altBin, self.larBin)
         
-        nBin = rectangles[len(rectangles) - 1][9]
+         
         
         fig = plt.figure()
         ax1 = fig.add_subplot(111, projection='3d')

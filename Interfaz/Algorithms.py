@@ -33,15 +33,18 @@ class StripLevel():
         self.topY=topY
         self.bins=bins
     def fitRectangle(self,rectangle):
-        queda=self.availableX-rectangle[5]
-        print("puse rectangulo en " + str(self.bins))
-        print("en " + str(self.availableX-rectangle[5]) + " ; " + str(self.topY)+ " ; "+ str(self.top))
-        rectangle=(rectangle[0],rectangle[1],self.availableX-rectangle[5],self.topY,self.top,rectangle[5],rectangle[6],rectangle[7],rectangle[8],self.bins,2,True)
-        self.availableX=queda
+        if rectangle[11] is False:
+            queda=self.availableX-rectangle[5]
+            print("puse rectangulo en " + str(self.bins))
+            print("en " + str(self.availableX-rectangle[5]) + " ; " + str(self.topY)+ " ; "+ str(self.top))
+            rectangle=(rectangle[0],rectangle[1],self.availableX-rectangle[5],self.topY,self.top,rectangle[5],rectangle[6],rectangle[7],rectangle[8],self.bins,2,True)
+            self.availableX=queda
+            print("me queda :" +str(self.availableX))
         return rectangle
     def canFit(self,rectangle):
         resta=self.availableX-rectangle[5]
         if  resta>=0:
+            print("canfit")
             return True
         else:
             return False
@@ -263,8 +266,10 @@ class Algorithms():
                             topZ=0
                     
                    if topZ==0:
+                       print("iftp=0")
                        levelt=StripLevel(largoBin-rectangles[indexOH][5],topZ,topeY,bins)
                    else:
+                       print("elsep=0")
                        levelt=StripLevel(largoBin,topZ,topeY,bins)
                    print("topz es " + str(topZ)) 
                    print("topz es " + str(topZ))
