@@ -1,5 +1,51 @@
 from memory_profiler import profile
 
+true = True
+false= False
+
+# =============================================================================
+# class StripLevelY():
+#     bin=0
+#     def __init__(self,y,top):
+#         self.y=y
+#         self.top=top
+#         self.availableY
+#     def fitRectangle(self,rectangle):
+#         queda=self.availableY-rectangle[6]
+#         if queda>=0:
+#             rectangle[3]=self.top
+#             self.availableY=queda
+#             return True
+#         else:
+#             return False
+#     def canFit(self,rectangle):
+#         if self.availableY-rectangle[6]>=0:
+#             return True
+#         else:
+#             return False
+# =============================================================================
+class StripLevel():
+    bin=0
+    def __init__(self,x,top,topY,bins):
+        self.x=x
+        self.top=top
+        self.availableX=x
+        self.topY=topY
+        self.bins=bins
+    def fitRectangle(self,rectangle):
+        queda=self.availableX-rectangle[5]
+        print("puse rectangulo en " + str(self.bins))
+        print("en " + str(self.availableX-rectangle[5]) + " ; " + str(self.topY)+ " ; "+ str(self.top))
+        rectangle=(rectangle[0],rectangle[1],self.availableX-rectangle[5],self.topY,self.top,rectangle[5],rectangle[6],rectangle[7],rectangle[8],self.bins,2,True)
+        self.availableX=queda
+        return rectangle
+    def canFit(self,rectangle):
+        resta=self.availableX-rectangle[5]
+        if  resta>=0:
+            return True
+        else:
+            return False
+        
 class Algorithms():
     
     def calVolumen(self, arr):
@@ -100,7 +146,7 @@ class Algorithms():
         larC = arrItem[0][7] ##mayor largo
     
         ########
-        arrItem[0] = (arrItem[0][0], arrItem[0][1], x, y - arrItem[0][5], z, arrItem[0][5], arrItem[0][6], arrItem[0][7], 0, bins, 0)
+        arrItem[0] = (arrItem[0][0], arrItem[0][1],x, y - arrItem[0][5], z, arrItem[0][5], arrItem[0][6], arrItem[0][7], 0, bins, 0)
         newEst = arrItem[0][6] ##Z
     
         for i in range(1, n):
@@ -148,6 +194,92 @@ class Algorithms():
                         
         
         return arrItem, bins
+    
+    @profile
+    def BFDH(self, rectangles, largoBin, anchBin, altoBin):
+        print("llegue al bf")
+        n=len(rectangles)
+        topeY=0
+        topeY2=0
+        levels=[]
+        highestY=-1
+        bins=0
+        topZ=0
+        for i in range(0,n):         
+                rectangles[i] = (rectangles[i][0],rectangles[i][1],rectangles[i][2],rectangles[i][3],rectangles[i][4],rectangles[i][5],rectangles[i][6],rectangles[i][7],rectangles[i][8],0,2,False)
+        self.quicksort(rectangles, 0, n-1,7)
+        indexOH=-1
+        
+        for i in range(0,n):
+           d=int(rectangles[i][6])
+           if d > highestY and rectangles[i][11] is False:                         
+               highestY=rectangles[i][6]
+               indexOH=i   
+        rectangles[indexOH]=(rectangles[indexOH][0],rectangles[indexOH][1],largoBin-rectangles[indexOH][5],0,0,rectangles[indexOH][5],rectangles[indexOH][6],rectangles[indexOH][7],0,bins,0,True)
+        topeY=0
+        highestY=-1
+        topeY2=rectangles[indexOH][6]
+        
+        for j in range(0,n):
+               print("llegue")
+               levelWithSmallestResidual=None
+               for level in levels:
+                   if level.canFit(rectangles[j]) and rectangles[j][11] is False:
+                       print("if de can Fit")
+                       if levelWithSmallestResidual is not None and levelWithSmallestResidual.availableX>level.availableX:
+                           levelWithSmallestResidual=level
+                       elif levelWithSmallestResidual is None:
+                           levelWithSmallestResidual=level
+               if levelWithSmallestResidual is None and rectangles[j][11] is False:    
+                   print("entro a este if")
+     
+                   if topZ+rectangles[j][7]>altoBin:
+                       topZ=0 
+                       for i in range(0,n):
+                           if rectangles[i][6]>=highestY and rectangles[i][11]==False:                         
+                               highestY=rectangles[i][6]
+                               indexOH=i
+                       print("topey : " + str(topeY) + "mH : " + str(rectangles[indexOH][6]))
+                       
+                       if topeY2+rectangles[indexOH][6]> anchBin:
+                            print("creo bin")
+                            bins+=1
+                            topeY=0
+                            highestY=-1
+                            rectangles[indexOH]=(rectangles[indexOH][0],rectangles[indexOH][1],largoBin-rectangles[indexOH][5],0,0,rectangles[indexOH][5],rectangles[indexOH][6],rectangles[indexOH][7],0,bins,0,True)
+                            print("topey es 0")
+                            topeY=0
+                            topeY2=rectangles[indexOH][6]
+                            topZ=0      
+                       else:
+                            print("topey " + str(topeY))
+                        
+                            rectangles[indexOH]=(rectangles[indexOH][0],rectangles[indexOH][1],largoBin-rectangles[indexOH][5],topeY+rectangles[indexOH][6],0,rectangles[indexOH][5],rectangles[indexOH][6],rectangles[indexOH][7],0,bins,0,True)                           
+                            
+                            topeY=topeY+rectangles[indexOH][6]
+                            topeY2=topeY2+rectangles[indexOH][6]
+                            print("topey " + str(topeY))
+                            highestY=-1
+                            topZ=0
+                    
+                   if topZ==0:
+                       levelt=StripLevel(largoBin-rectangles[indexOH][5],topZ,topeY,bins)
+                   else:
+                       levelt=StripLevel(largoBin,topZ,topeY,bins)
+                   print("topz es " + str(topZ)) 
+                   print("topz es " + str(topZ))
+                   rectangles[j]=levelt.fitRectangle(rectangles[j])
+                   topZ+=rectangles[j][7]
+                  
+                   print(rectangles[j])
+                   levels.append(levelt)
+               elif rectangles[j][11] is False:
+                   print("llenar nivel con residuo")
+                   rectangles[j]=levelWithSmallestResidual.fitRectangle(rectangles[j])
+        return bins
+
+  
+        
     @profile
     def Algorithm(self, rectangles, anchoC, altoC, largoC):
     

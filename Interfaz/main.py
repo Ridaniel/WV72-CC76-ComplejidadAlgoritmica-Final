@@ -217,7 +217,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
     
     def graph3D(self):
         global rectangles
-        
+        nBin=0
         alg = Algorithms()
 
         if self.comboBox.currentText() == "NFDH":
@@ -228,24 +228,28 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             execution_time = stop - start
 
             print("Program Executed in "+str(execution_time)) #It returns time in sec
-            
+            nBin= self.arrItem[len(self.arrItem) - 1][9]
         elif self.comboBox.currentText() == "Algorithm":
             start = timeit.default_timer()
             alg.Algorithm(self.arrItem, self.anchBin, self.altBin, self.larBin)
             stop = timeit.default_timer()
             execution_time = stop - start
-
+            nBin= self.arrItem[len(self.arrItem) - 1][9]
+        elif self.comboBox.currentText() == "BF":
+            start = timeit.default_timer()
+            nBin=alg.BFDH(self.arrItem, self.anchBin, self.altBin, self.larBin)
+            stop = timeit.default_timer()
+            execution_time = stop - start
             print("Program Executed in "+str(execution_time)) #It returns time in sec
         else:
             print("En proceso")
             
         print(self.arrItem)
         
-        nBin = self.arrItem[len(self.arrItem) - 1][9]
+         
         
         fig = plt.figure()
         ax1 = fig.add_subplot(111, projection='3d')
-        
         plots = [(0, 0, 0, 0, 0, 0)] * (nBin+1)
          
         for i in range(nBin+1):
@@ -283,7 +287,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             self.curr_pos = self.curr_pos % len(plots)
 
             ax1.cla()
-            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5])
+            ax1.bar3d(plots[self.curr_pos][0],plots[self.curr_pos][1],plots[self.curr_pos][2],plots[self.curr_pos][3],plots[self.curr_pos][4],plots[self.curr_pos][5],shade=True)
             print(self.curr_pos)
             fig.canvas.draw()
         file = Files()

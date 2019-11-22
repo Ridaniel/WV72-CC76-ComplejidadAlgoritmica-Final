@@ -449,7 +449,7 @@ QPushButton:hover
      </item>
      <item>
       <property name="text">
-       <string>Unknow</string>
+       <string>BF</string>
       </property>
      </item>
      <item>
