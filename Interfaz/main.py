@@ -82,8 +82,8 @@ class Files():
         
         n = len(rectangles)
         containersU = rectangles[n-1][9]
-        volumenT = 2000
-        volumenO = 1000
+        volumenT = 3758
+        volumenO = 1901
         voluemenD = volumenT- volumenO
         
         f = open("result.txt","w")
@@ -321,7 +321,7 @@ class MyApp(QtWidgets.QMainWindow ,Ui_MainWindow):
             alg.Algorithm(rectangles, contain[0], contain[1], contain[2])
             nBin= rectangles[len(rectangles) - 1][9]
         else:
-           nBin=alg.BFDH(self.arrItem, self.anchBin, self.altBin, self.larBin)
+           nBin=alg.BFDH(rectangles, contain[1], contain[0], contain[2])
         
          
         
